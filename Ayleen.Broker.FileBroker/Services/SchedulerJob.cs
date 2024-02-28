@@ -7,7 +7,7 @@ namespace Ayleen.Broker.FileBroker.Services;
 public class SchedulerJob(IOptions<FileBrokerSettings> options) : IJob
 {
     public static readonly JobKey Key = new("file-scheduler-job", "broker");
-    
+
     public async Task Execute(IJobExecutionContext context)
     {
         var requestsPath = Path.Combine(options.Value.Path, options.Value.RequestFolder);
@@ -15,6 +15,7 @@ public class SchedulerJob(IOptions<FileBrokerSettings> options) : IJob
         {
             return;
         }
+
         var responsesPath = Path.Combine(options.Value.Path, options.Value.ResponseFolder);
         if (!Path.Exists(responsesPath))
         {
@@ -25,14 +26,14 @@ public class SchedulerJob(IOptions<FileBrokerSettings> options) : IJob
         var files = requestsDirectory.GetFiles("*.req.*", SearchOption.TopDirectoryOnly);
         var fileNames = new HashSet<string>(files.Select(f => f.Name));
 
-        var filesToProcess = 
-            (
-                from fileName in 
-                    fileNames.Where(f 
-                        => f.EndsWith(".req", StringComparison.InvariantCultureIgnoreCase)) 
-                where !fileNames.Contains(fileName + ".lck") 
-                select fileName
-            ).ToList();
+        var filesToProcess =
+        (
+            from fileName in
+                fileNames.Where(f
+                    => f.EndsWith(".req", StringComparison.InvariantCultureIgnoreCase))
+            where !fileNames.Contains(fileName + ".lck")
+            select fileName
+        ).ToList();
 
         using var semaphore = new SemaphoreSlim(10);
         var taskList = new List<Task>();
@@ -51,11 +52,11 @@ public class SchedulerJob(IOptions<FileBrokerSettings> options) : IJob
                     var key = await File.ReadAllTextAsync(requestFileName);
 
                     var responseFileName = Path.ChangeExtension(Path.Combine(responsesPath, fileName), ".rsp");
-                    await using var responseFile =File.CreateText(responseFileName);
+                    await using var responseFile = File.CreateText(responseFileName);
                     var response = DataCalculator.Calculate(key);
                     await responseFile.WriteAsync($"200\n{response}");
                     responseFile.Close();
-            
+
                     File.Delete(lockFileName);
                     File.Delete(requestFileName);
                 }

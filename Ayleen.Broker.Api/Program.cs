@@ -1,7 +1,6 @@
 using Ayleen.Broker.Api.Interfaces;
 using Ayleen.Broker.Api.Models;
 using Ayleen.Broker.Api.Services;
-using Ayleen.Broker.FileBroker;
 using Ayleen.Broker.FileBroker.Models;
 using Ayleen.Broker.FileBroker.Services;
 using Ayleen.Broker.Library.Interfaces;
@@ -26,7 +25,8 @@ builder.Services
 
 builder.Services
     .Configure<FileBrokerSettings>(builder.Configuration.GetSection(FileBrokerSettings.Section))
-    .Configure<DataServiceSettings>(builder.Configuration.GetSection(DataServiceSettings.Section));
+    .Configure<DataServiceSettings>(builder.Configuration.GetSection(DataServiceSettings.Section))
+    .Configure<CachedEventManagerSettings>(builder.Configuration.GetSection(CachedEventManagerSettings.Section));
 
 builder.Services
     .AddQuartz(q =>
@@ -45,18 +45,17 @@ builder.Services
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-    //{
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
+}
 
 app.UseHttpsRedirection();
 
 app.MapGet("/getdata/{key}", async ([FromServices] IDataService data, [FromRoute] string key, CancellationToken cancellationToken) 
         => Results.Ok(await data.GetResponseAsync(Helpers.GetMd5("/getData"), key, cancellationToken)))
     .WithName("GetData")
-    .WithOpenApi()
-    ;
+    .WithOpenApi();
+
 app.Run();

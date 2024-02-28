@@ -2,7 +2,7 @@ namespace Ayleen.Broker.Manager.Models;
 
 public class EventData
 {
-    public string Key { get; set; }
+    public string Key { get; init; }
     
-    public string Payload { get; set; }
+    public string Payload { get; init; }
 }

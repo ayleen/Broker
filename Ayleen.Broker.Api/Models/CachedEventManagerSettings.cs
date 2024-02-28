@@ -4,5 +4,5 @@ public class CachedEventManagerSettings
 {
     public const string Section = "CachedEventManager";
 
-    public int KeyTimeoutInSeconds = 600;
+    public int KeyTimeoutInSeconds { get; init; } = 600;
 }

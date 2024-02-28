@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Ayleen.Broker.Api.Services;
 
-public class CachedEventManager(IEventManager eventManager, IMemoryCache memoryCache, IOptions<DataServiceSettings> options) : ICachedEventManager
+public class CachedEventManager(IEventManager eventManager, IMemoryCache memoryCache, IOptions<CachedEventManagerSettings> options) : ICachedEventManager
 {
     public Task<bool> AddEventAsync(string hash, string key, CancellationToken cancellationToken)
     {

@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Interfaces\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Ayleen.Broker.Library\Ayleen.Broker.Library.csproj" />
     </ItemGroup>
 
