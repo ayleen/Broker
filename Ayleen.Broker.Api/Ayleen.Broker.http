@@ -1,0 +1,7 @@
+@Ayleen.Broker_HostAddress = http://localhost:8080
+@key = variable value
+
+GET {{Ayleen.Broker_HostAddress}}/getdata/{{key}}/
+Accept: application/json
+
+###

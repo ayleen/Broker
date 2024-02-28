@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <AssemblyName>Ayleen.Broker.Api</AssemblyName>
+        <RootNamespace>Ayleen.Broker.Api</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
+        <PackageReference Include="Quartz.AspNetCore" Version="3.8.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\Dockerfile">
+        <Link>Properties\Dockerfile</Link>
+      </Content>
+      <Content Include="..\README.md">
+        <Link>README.md</Link>
+      </Content>
+      <Content Include="..\start.sh">
+        <Link>Properties\start.sh</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Ayleen.Broker.FileBroker\Ayleen.Broker.FileBroker.csproj" />
+      <ProjectReference Include="..\Ayleen.Broker.Manager\Ayleen.Broker.Manager.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Helpers\" />
+    </ItemGroup>
+
+</Project>
